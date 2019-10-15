@@ -1,0 +1,36 @@
+<section class="todoapp">
+  <header class="header">
+    <h1>{{titre}}</h1>
+    <form>
+      <input  #newTodoInput
+              name        = "newTodoInput"
+              class       = "new-todo"
+              placeholder = "Que faire?"
+              autofocus />
+    </form>
+  </header>
+  <section class="main">
+    <input  class="toggle-all"
+            type="checkbox"
+            name="toggleAll"
+    />
+    <ul class="todo-list">
+    </ul>
+  </section>
+  <footer class="footer">
+    <span class="todo-count"><strong></strong> restantes</span>
+    <ul class="filters">
+      <li>
+        <a class="filterAll">Tous</a>
+      </li>
+      <li>
+        <a class="filterActives">Actifs</a>
+      </li>
+      <li>
+        <a class="filterCompleted">Complétés</a>
+      </li>
+    </ul>
+    <button class="clear-completed">Supprimer cochées</button>
+  </footer>
+</section>
+<hr/>
