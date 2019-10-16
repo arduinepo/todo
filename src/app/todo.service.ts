@@ -3,10 +3,11 @@ import {TodoListData} from './dataTypes/TodoListData';
 import {Observable, BehaviorSubject} from 'rxjs';
 import {TodoItemData} from './dataTypes/TodoItemData';
 
-//
 @Injectable()
 export class TodoService {
+
   private todoListSubject = new BehaviorSubject<TodoListData>( {label: 'TodoList', items: []} );
+
   constructor() { }
 
   getTodoListDataObserver(): Observable<TodoListData> {

@@ -10,18 +10,22 @@ import {TodoService} from '../todo.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodoListComponent implements OnInit {
-  @Input() private data: TodoListData;
 
-  constructor(private todoService: TodoService) { }
+  @Input() 
+  
+  private data: TodoListData;
+  
+  constructor(private todoService: TodoService) { 
+  }
 
   ngOnInit() {
   }
 
-  getLabel(): string {
+  get label(): string {
     return this.data ? this.data.label : '';
   }
 
-  getItems(): TodoItemData[] {
+  get items(): TodoItemData[] {
     return this.data ? this.data.items : [];
   }
 
