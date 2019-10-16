@@ -33,7 +33,7 @@ export class TodoService {
   appendItems( ...items: TodoItemData[] ) {
     const tdl = this.todoListSubject.getValue();
     this.todoListSubject.next( {
-      ...tdl,
+      label: tdl.label, // ou on peut écrire: ...tdl,
       items: [...tdl.items, ...items]
     });
   }
@@ -41,7 +41,7 @@ export class TodoService {
   removeItems( ...items: TodoItemData[] ) {
     const tdl = this.todoListSubject.getValue();
     this.todoListSubject.next( {
-      ...tdl,
+      label: tdl.label, // ou on peut écrire: ...tdl,
       items: tdl.items.filter( I => items.indexOf(I) === -1 )
     });
   }
