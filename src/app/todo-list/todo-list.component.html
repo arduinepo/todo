@@ -1,0 +1,54 @@
+<section class="todoapp">
+  <header class="header">
+    <h1>{{titre}}</h1>
+    <form (submit)="appendItem( newTodoInput.value )">
+      <input #newTodoInput
+             name="newTodoInput"
+             class="new-todo"
+             placeholder="Que faire?"
+             autofocus/>
+    </form>
+  </header>
+
+  <section class="main">
+    <input class="toggle-all"
+           type="checkbox"
+           name="toggleAll"
+    />
+    <ul class="todo-list">
+      <li *ngFor="let item of filteredItems()" [class.completed]="item.isDone">
+        <app-todo-item [data]="item"></app-todo-item>
+      </li>
+    </ul>
+  </section>
+
+  <footer class="footer">
+    <span class="todo-count">{{numberLeft()}} restantes</span>
+    <ul class="filters">
+      <li>
+        <a class="all" (click)="changeFilter('all')">Tous</a>
+      </li>
+      <li>
+        <a class="active" (click)="changeFilter('active')">Actifs</a>
+      </li>
+      <li>
+        <a class="completed" (click)="changeFilter('completed')">Complétés</a>
+      </li>
+    </ul>
+    <button class="clear-completed" (click)="removeDone()">Supprimer cochées</button>
+  </footer>
+</section>
+<hr/>
+
+<h2>Debug</h2>
+<ul>
+  <li *ngFor="let item of items">
+    <input type="checkbox" [ngModel]="item.isDone" (ngModelChange)="itemDone(item, $event)"/>
+    <form (submit)="itemLabel(item, $newLab.value)">
+      <input type="text" name="label" [ngModel]="item.label" #newLab/>
+    </form>
+    <button (click)="removeItem(item)">DELETE</button>
+    <label>{{item.label}}</label>
+    <pre>{{item | json}}</pre>
+  </li>
+</ul>

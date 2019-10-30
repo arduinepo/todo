@@ -1,0 +1,14 @@
+<div class="view">
+  <input class=""
+         type="checkbox"
+         [ngModel]="done"
+         (ngModelChange)="setDone(!done)"
+  />
+  <label class="texte">{{this.label}}</label>
+  <button class="destroy" (click)="remove()"></button>
+</div>
+<form>
+  <input #newTextInput
+         name="newTextInput"
+         class="edit"/>
+</form>
