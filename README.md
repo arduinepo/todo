@@ -1,8 +1,8 @@
-Exécuter `npm install` pour installer les dépendances Node.js.
-Exécuter ng serve pour lancer le serveur et visiter la page localhost:4200
+Exécuter `npm install` pour installer les dépendances Node.js.Exécuter ng serve pour lancer le serveur et visiter la page localhost:4200
+Exécuter ng serve pour lancer le serveur et visiter la page localhost:4200 .
 
 Todo :
-* Sérialisation / désérialisation des données localement (Local Storage) - Pour sauvegarder les données localement
+* images pour la checkbox
 * Undo / Redo (Annuler / Refaire)
 * Version responsive (application qui s'adapte aux tailles d'écran, comme un smartphone)
 * Effacer Tout
@@ -13,4 +13,3 @@ Todo :
 * Copie de listes par QR-code
 * Géolocalisation des choses à faire (carte google map par exemple)
 * Passage à une application hybride avec IONIC
-
