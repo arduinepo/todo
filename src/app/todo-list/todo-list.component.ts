@@ -15,6 +15,8 @@ export class TodoListComponent implements OnInit {
   private data: TodoListData;
   private titre: string;
   private currentFilter: string;
+  private dataUndoArray: Array<TodoItemData[]> = [];
+  private dataRedoArray: Array<TodoItemData[]> = [];
 
   constructor(private todoService: TodoService) {
     todoService.getTodoListDataObserver().subscribe(tdl => this.data = tdl);
@@ -24,6 +26,25 @@ export class TodoListComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  // undo() {
+  //   console.log('fdsfds');
+  //   if (this.data.items.length !== 0) {
+  //     this.dataRedoArray.push(Array.from(this.data.items));
+  //     this.todoService.update(Array.from(this.dataUndoArray.pop()));
+  //   }
+  // }
+  //
+  // redo() {
+  //   if (this.dataRedoArray.length !== 0) {
+  //     this.dataUndoArray.push(Array.from(this.data.items));
+  //     this.todoService.update(Array.from(this.dataRedoArray.pop()));
+  //   }
+  // }
+  //
+  // saveCurrentState() {
+  //     this.dataUndoArray.push(Array.from(this.data.items));
+  // }
 
   changeFilter(filter) {
     this.currentFilter = filter;
@@ -57,18 +78,22 @@ export class TodoListComponent implements OnInit {
         label,
         isDone: false
       });
+//    this.saveCurrentState();
   }
 
   itemDone(item: TodoItemData, done: boolean) {
     this.todoService.setItemsDone(done, item);
+//    this.saveCurrentState();
   }
 
   itemLabel(item: TodoItemData, label: string) {
     this.todoService.setItemsLabel(label, item);
+ //   this.saveCurrentState();
   }
 
   removeItem(item: TodoItemData) {
     this.todoService.removeItems(item);
+ //   this.saveCurrentState();
   }
 
   numberLeft(): number {
@@ -77,6 +102,7 @@ export class TodoListComponent implements OnInit {
 
   removeDone() {
     this.todoService.removeDone();
+  //  this.saveCurrentState();
   }
 
 }
