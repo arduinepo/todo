@@ -346,6 +346,11 @@ html .clear-completed:active {
   text-decoration: underline;
 }
 
+.options button {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
 
 /*
 	Hack to remove background from Mobile Safari.

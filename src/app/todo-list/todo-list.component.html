@@ -1,4 +1,9 @@
 <section class="todoapp">
+  <section class="options">
+    <button (click)="undo()">Annuler</button>
+    <button (click)="redo()">Refaire</button>
+    <button class="clear-all" (click)="removeAll()">Effacer tout</button>
+  </section>
   <header class="header">
     <h1>{{label}}</h1>
     <form (submit)="appendItem(newTodoInput.value); newTodoInput.value = ''">
@@ -25,7 +30,8 @@
     </ul>
   </section>
   <footer class="footer">
-    <span class="todo-count"><strong>{{"" + numberLeft() + (numberLeft() == 1 ? ' restante' : ' restantes')}}</strong></span>
+    <span
+      class="todo-count"><strong>{{"" + numberLeft() + (numberLeft() == 1 ? ' restante' : ' restantes')}}</strong></span>
     <ul class="filters">
       <li>
         <a class="filterAll" (click)="filter = 'all'">Tous</a>

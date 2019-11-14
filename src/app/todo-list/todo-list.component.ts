@@ -28,6 +28,18 @@ export class TodoListComponent implements OnInit {
     return this.data.label;
   }
 
+  undo() {
+    this.todoService.undo();
+  }
+
+  redo() {
+    this.todoService.redo();
+  }
+
+  removeAll() {
+    this.todoService.removeAll();
+  }
+
   get items(): TodoItemData[] {
     switch (this._filter) {
       case('all'):
