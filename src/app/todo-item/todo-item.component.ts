@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
-import { TodoService } from "../todo.service";
-import { TodoItemData } from "../dataTypes/TodoItemData";
+import {Component, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
+import {TodoService} from '../todo.service';
+import {TodoItemData} from '../dataTypes/TodoItemData';
 
 @Component({
   selector: 'app-todo-item',
@@ -10,14 +10,16 @@ import { TodoItemData } from "../dataTypes/TodoItemData";
 export class TodoItemComponent implements OnInit {
 
   @Input() private data: TodoItemData;
- 
-  @ViewChild("newTextInput", {static: false}) private inputLabel: ElementRef;
+
+  @ViewChild('newTextInput', {static: false}) private inputLabel: ElementRef;
 
   private _editionMode = false;
 
-  constructor(private todoService: TodoService) { }
+  constructor(private todoService: TodoService) {
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   get editionMode(): boolean {
     return this._editionMode;
