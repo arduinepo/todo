@@ -71,7 +71,7 @@ export class TodoListComponent implements OnInit {
   }
 
   isAllDone(): boolean {
-    return this.items.every(it => it.isDone);
+    return this.data.items.every(it => it.isDone) || false;
   }
 
   toggleAllDone() {
