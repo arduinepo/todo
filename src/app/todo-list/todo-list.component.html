@@ -1,8 +1,9 @@
 <section class="todoapp">
   <section class="options">
-    <button (click)="undo()">Annuler</button>
-    <button (click)="redo()">Refaire</button>
-    <button class="clear-all" (click)="removeAll()">Effacer tout</button>
+    <input type="button" [disabled]="!undoable()" (click)="undo()" value="Annuler"/>
+    <input type="button" [disabled]="!redoable()" (click)="redo()" value="Refaire"/>
+    <input type="button" [disabled]="isEmpty()" (click)="removeAll()" value="Effacer tout"/>
+    <input type="button" (click)="recordSpeech()" value="Ajouter par reconnaissance vocale"/>
   </section>
   <header class="header">
     <h1>{{label}}</h1>
@@ -46,18 +47,3 @@
     <button class="clear-completed" (click)="removeDone()">Supprimer cochées</button>
   </footer>
 </section>
-<hr/>
-
-<!-- Version debug de la liste V5, suppression de l'item -->
-<h2>Debug V5</h2>
-<ul>
-  <li *ngFor="let item of items">
-    <input type="checkbox" [ngModel]="item.isDone" (ngModelChange)="itemDone(item, $event)"/>
-    <form (submit)="itemLabel(item, newLab.value)">
-      <input type="text" name="label" [ngModel]="item.label" #newLab/>
-    </form>
-    <button (click)="removeItem(item)">DELETE</button>
-    <pre>{{item | json}}</pre>
-  </li>
-</ul>
-
