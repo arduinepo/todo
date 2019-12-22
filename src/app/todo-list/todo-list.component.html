@@ -3,7 +3,6 @@
     <input type="button" [disabled]="!undoable()" (click)="undo()" value="Annuler"/>
     <input type="button" [disabled]="!redoable()" (click)="redo()" value="Refaire"/>
     <input type="button" [disabled]="isEmpty()" (click)="removeAll()" value="Effacer tout"/>
-    <input type="button" (click)="recordSpeech()" value="Ajouter par reconnaissance vocale"/>
   </section>
   <header class="header">
     <h1>{{label}}</h1>

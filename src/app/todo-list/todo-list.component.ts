@@ -1,10 +1,12 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit, ViewChild, ElementRef, HostListener} from '@angular/core';
+import {Component, Input, OnInit, ViewChild, ElementRef, HostListener, ChangeDetectorRef} from '@angular/core';
 import {TodoListData} from '../dataTypes/TodoListData';
 import {TodoItemData} from '../dataTypes/TodoItemData';
 import {TodoService} from '../todo.service';
+import {SpeechRecognitionService} from '../speech-recognition.service';
 
 /*
- * Component chargé d'afficher le contenu d'une TodoListData transmise par un TodoService, et de recueillir les données entrées par l'utilisateur,
+ * Component chargé d'afficher le contenu d'une TodoListData transmise par un TodoService et un SpeechRecognitionService,
+ * et de recueillir les données entrées par l'utilisateur,
  * pour les transférer au TodoService injecté en dépendance.
  */
 
@@ -16,7 +18,7 @@ import {TodoService} from '../todo.service';
 export class TodoListComponent implements OnInit {
   /*
   * Données en lecture : l'instance de cette classe est liée à un TodoListData.
-  * Cette classe appelle des méthodes du ToDoService pour les modifier.
+  * Cette classe appelle des méthodes du ToDoService pour modifier les données, en fonction des actions de l'utilisateur.
   */
   @Input() private data: TodoListData;
   @ViewChild('newTodoInput', {static: false}) newTodoInput: ElementRef;
@@ -26,15 +28,47 @@ export class TodoListComponent implements OnInit {
   _filter: string;
 
   /*
-  * Observe les données du ToDoService, met à jour ses propres données à chaque modification.
+  * Observe les données du ToDoService et du SpeechRecognitionService, met à jour ses propres données à chaque modification.
   * Initialise le filtre à 'all' par défaut.
   */
-  constructor(private todoService: TodoService) {
+  constructor(private todoService: TodoService, private speechService: SpeechRecognitionService, private ref: ChangeDetectorRef) {
     todoService.getTodoListDataObserver().subscribe(tdl => this.data = tdl);
     this.filter = 'all';
+
+    speechService.listen().pipe().subscribe((input: string) => {
+      if (input !== '') {
+        if (input === 'effacer tout') {
+          this.todoService.removeAll();
+          ref.detectChanges();
+        } else {
+          if (!this.speechModifyCommand(input)) {
+            this.todoService.appendItems({label: input, isDone: false});
+            ref.detectChanges();
+          }
+        }
+      }
+    });
   }
 
   ngOnInit() {
+  }
+
+  /*
+    Ne marche pas : censé renvoyer vrai si l'input vocal correspond à la concaténation du contenu label d'un item
+    et des mots 'fait', 'fais' ou 'c'est'.
+   */
+  speechModifyCommand(input: string): boolean {
+    if (input.includes(' ')) {
+      const sub = input.substring(input.lastIndexOf(' '));
+      if (sub === ' fait' || sub === ' fais' || sub === ' c\'est') {
+        this.data.items.forEach((i) => {
+          if (' ' + input === i.label + sub) {
+            return true;
+          }
+        });
+      }
+    }
+    return false;
   }
 
   get label(): string {
@@ -59,10 +93,12 @@ export class TodoListComponent implements OnInit {
   * Ajoute un item à la liste
   */
   appendItem(label: string) {
-    this.todoService.appendItems({
-      label,
-      isDone: false
-    });
+    if (label !== '') {
+      this.todoService.appendItems({
+        label,
+        isDone: false
+      });
+    }
   }
 
   /*
@@ -142,10 +178,6 @@ export class TodoListComponent implements OnInit {
   */
   isEmpty(): boolean {
     return this.data.items.length === 0;
-  }
-
-  recordSpeech() {
-    //   this.todoService.recordSpeech();
   }
 
 }

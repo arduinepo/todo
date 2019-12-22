@@ -4,7 +4,8 @@ import {Observable, BehaviorSubject} from 'rxjs';
 import {TodoItemData} from './dataTypes/TodoItemData';
 
 /*
- * Le ToDoService est utilisé par chaque component pour accéder aux données et les modifier, par l'injection de dépendance. Les componentsse concentrent
+ * Le ToDoService est utilisé par chaque component pour accéder aux données et les modifier,
+ * par l'injection de dépendance. Les componentsse concentrent
  * sur leur rôle d'affichage et d'interface.
  */
 
@@ -25,11 +26,13 @@ export class TodoService {
   private STORAGE_KEY_UNDO = 'undolist';
   private STORAGE_KEY_REDO = 'redolist';
 
-  // private speechRecognition = new webkitSpeechRecognition();
+  constructor() {
+    this.loadStorage();
+  }
 
   /* Récupère les données du localStorage.
   */
-  constructor() {
+  loadStorage() {
     let prevTodo: TodoListData;
     if (localStorage[this.STORAGE_KEY_TODO]) {
       prevTodo = JSON.parse(localStorage[this.STORAGE_KEY_TODO]) as TodoListData;
@@ -41,36 +44,13 @@ export class TodoService {
       }
     }
     if (localStorage[this.STORAGE_KEY_UNDO]) {
-      this.undoArray = JSON.parse(localStorage[this.STORAGE_KEY_UNDO]) as TodoListData[];
+      const undoStore = JSON.parse(localStorage[this.STORAGE_KEY_UNDO]) as TodoListData[];
+      this.undoArray = undoStore.slice(undoStore.length > 100 ? undoStore.length - 100 : 0);
     }
     if (localStorage[this.STORAGE_KEY_REDO]) {
       this.redoArray = JSON.parse(localStorage[this.STORAGE_KEY_REDO]) as TodoListData[];
     }
-    /*
-    this.speechRecognition.lang = 'fr-FR';
-    this.speechRecognition.interimResults = false;*/
   }
-
-  /*recordSpeech() {
-    this.speechRecognition.start();
-    const service = this;
-    this.speechRecognition.onspeechstart = function (event) {
-      console.log('STAAAAAART');
-    };
-    this.speechRecognition.onresult = function (e) {
-      console.log(e.results);
-      service.appendItems(e.results[0].transcript);
-      // console.log('blabla:' + +e.results + e.results[0].transcript);
-      // service.appendItems(e.results[0].transcript);
-      // service.speechRecognition.abort();
-    };
-    this.speechRecognition.onspeechend = function (event) {
-      console.log('speech EEEEEND');
-      service.speechRecognition.abort();
-      // service.stop();
-      // service.start();
-    };
-  }*/
 
   /* Renvoit le todoListSubject en tant qu'observable, pour la souscription d'autres objets à ses modifications. */
   getTodoListDataObserver(): Observable<TodoListData> {
@@ -148,7 +128,7 @@ export class TodoService {
   /* Sauvegarde en localStorage l'état courant de la liste */
   storeLocal() {
     localStorage[this.STORAGE_KEY_TODO] = JSON.stringify(this.todoListSubject.getValue());
-    localStorage[this.STORAGE_KEY_UNDO] = JSON.stringify(this.undoArray);
+    localStorage[this.STORAGE_KEY_UNDO] = JSON.stringify(this.undoArray.slice(this.undoArray.length > 100 ? this.undoArray.length - 100 : 0));
     localStorage[this.STORAGE_KEY_REDO] = JSON.stringify(this.redoArray);
   }
 

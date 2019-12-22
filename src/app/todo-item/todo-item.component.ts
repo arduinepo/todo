@@ -1,6 +1,7 @@
-import {Component, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, Input, ViewChild, ElementRef, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
 import {TodoService} from '../todo.service';
 import {TodoItemData} from '../dataTypes/TodoItemData';
+import {SpeechRecognitionService} from '../speech-recognition.service';
 
 /*
  * COmponent chargé d'afficher le contenu d'un TodoItemData, et de recueillir les données entrées par l'utilisateur,
@@ -23,7 +24,27 @@ export class TodoItemComponent implements OnInit {
   */
   private _editionMode = false;
 
-  constructor(private todoService: TodoService) {
+  /*
+  * Initialise la réception des données du SpeechRecognitionService : si un input correspond à la concaténation
+  * du contenu label de l'item et d'un mot décrivant une action, cette action est effectuée via le TodoService.
+   */
+  constructor(private todoService: TodoService, private speechService: SpeechRecognitionService, private ref: ChangeDetectorRef) {
+    speechService.listen().pipe().subscribe((input: string) => {
+      if (input !== '' && input !== 'effacer tout') {
+        switch (input) {
+          case (this.data.label + ' fait'):
+          case (this.data.label + ' fais'):
+          case (this.data.label + ' c\'est'):
+            this.todoService.setItemsDone(true, this.data);
+            break;
+          case this.data.label + ' effacer':
+          case this.data.label + ' supprimer':
+          case this.data.label + ' enlever':
+            this.todoService.removeItems(this.data);
+        }
+        ref.detectChanges();
+      }
+    });
   }
 
   ngOnInit() {
